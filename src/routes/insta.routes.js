@@ -97,7 +97,7 @@ instaRoutes.post("/", function (request, response) { return __awaiter(void 0, vo
                     }); }))];
             case 3:
                 test = _b.sent();
-                return [2 /*return*/, response.send(test.join())];
+                return [2 /*return*/, response.send(test.join(''))];
             case 4:
                 error_1 = _b.sent();
                 return [2 /*return*/, response.json({ error: error_1.message })];

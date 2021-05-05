@@ -42,7 +42,7 @@ instaRoutes.post("/", async (request, response) => {
         
         
 
-        return response.send(test.join())
+        return response.send(test.join(''))
     } catch(error) {
         return response.json({ error: error.message })
     }
