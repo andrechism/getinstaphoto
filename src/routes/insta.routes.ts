@@ -36,7 +36,7 @@ instaRoutes.post("/", async (request, response) => {
             const imageBuffer = await imageResponse.arrayBuffer()
             var imageStr = await arrayBufferToBase64(imageBuffer);
             var base64Flag = 'data:image/jpeg;base64,';
-            return `<a href="https://www.instagram.com/p/${edge.node.shortcode}/"><img src="${base64Flag + imageStr}" /></a>`
+            return `<a target="_blank" href="https://www.instagram.com/p/${edge.node.shortcode}/"><img src="${base64Flag + imageStr}" /></a>`
         }))
 
         

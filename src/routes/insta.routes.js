@@ -91,7 +91,7 @@ instaRoutes.post("/", function (request, response) { return __awaiter(void 0, vo
                                 case 3:
                                     imageStr = _a.sent();
                                     base64Flag = 'data:image/jpeg;base64,';
-                                    return [2 /*return*/, "<a href=\"https://www.instagram.com/p/" + edge.node.shortcode + "/\"><img src=\"" + (base64Flag + imageStr) + "\" /></a>"];
+                                    return [2 /*return*/, "<a target=\"_blank\" href=\"https://www.instagram.com/p/" + edge.node.shortcode + "/\"><img src=\"" + (base64Flag + imageStr) + "\" /></a>"];
                             }
                         });
                     }); }))];
