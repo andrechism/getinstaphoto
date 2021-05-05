@@ -42,14 +42,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.instaRoutes = void 0;
 var express_1 = require("express");
 var node_fetch_1 = __importDefault(require("node-fetch"));
+var btoa_1 = __importDefault(require("btoa"));
 var instaRoutes = express_1.Router();
 exports.instaRoutes = instaRoutes;
+function arrayBufferToBase64(buffer) {
+    return __awaiter(this, void 0, void 0, function () {
+        var binary, bytes;
+        return __generator(this, function (_a) {
+            binary = '';
+            bytes = [].slice.call(new Uint8Array(buffer));
+            bytes.forEach(function (b) { return binary += String.fromCharCode(b); });
+            return [2 /*return*/, btoa_1.default(binary)];
+        });
+    });
+}
+;
 instaRoutes.post("/", function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, user_id, how_many, link, options, fetchResponse, data, error_1;
+    var _a, user_id, how_many, link, options, fetchResponse, data, edges, test, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _b.trys.push([0, 3, , 4]);
+                _b.trys.push([0, 4, , 5]);
                 _a = request.body, user_id = _a.user_id, how_many = _a.how_many;
                 link = "https://www.instagram.com/graphql/query/?variables=%7B%22id%22%3A%22" + user_id + "%22,%22first%22%3A" + how_many + "%7D&query_hash=bfa387b2992c3a52dcbe447467b4b771";
                 options = {
@@ -63,11 +76,32 @@ instaRoutes.post("/", function (request, response) { return __awaiter(void 0, vo
                 return [4 /*yield*/, fetchResponse.json()];
             case 2:
                 data = _b.sent();
-                return [2 /*return*/, response.json(data)];
+                edges = data.data.user.edge_owner_to_timeline_media.edges;
+                return [4 /*yield*/, Promise.all(edges.map(function (edge) { return __awaiter(void 0, void 0, void 0, function () {
+                        var imageResponse, imageBuffer, imageStr, base64Flag;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, node_fetch_1.default(edge.node.display_url)];
+                                case 1:
+                                    imageResponse = _a.sent();
+                                    return [4 /*yield*/, imageResponse.arrayBuffer()];
+                                case 2:
+                                    imageBuffer = _a.sent();
+                                    return [4 /*yield*/, arrayBufferToBase64(imageBuffer)];
+                                case 3:
+                                    imageStr = _a.sent();
+                                    base64Flag = 'data:image/jpeg;base64,';
+                                    return [2 /*return*/, "<img src=\"" + (base64Flag + imageStr) + "\" />"];
+                            }
+                        });
+                    }); }))];
             case 3:
+                test = _b.sent();
+                return [2 /*return*/, response.send(test.join())];
+            case 4:
                 error_1 = _b.sent();
                 return [2 /*return*/, response.json({ error: error_1.message })];
-            case 4: return [2 /*return*/];
+            case 5: return [2 /*return*/];
         }
     });
 }); });

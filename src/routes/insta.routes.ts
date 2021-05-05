@@ -1,7 +1,17 @@
 import { Router } from "express";
 import fetch from 'node-fetch'
+import btoa from 'btoa'
 
 const instaRoutes = Router();
+
+async function arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer));
+  
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+  
+    return btoa(binary);
+  };
 
 instaRoutes.post("/", async (request, response) => {
     try {
@@ -17,8 +27,21 @@ instaRoutes.post("/", async (request, response) => {
         }
         const fetchResponse = await fetch(link, options)
         const data = await fetchResponse.json()
+        const edges = data.data.user.edge_owner_to_timeline_media.edges
 
-        return response.json(data)
+        // return response.json(data)
+        const test = await Promise.all(edges.map(async (edge) => {
+            const imageResponse = await fetch(edge.node.display_url)
+            const imageBuffer = await imageResponse.arrayBuffer()
+            var imageStr = await arrayBufferToBase64(imageBuffer);
+            var base64Flag = 'data:image/jpeg;base64,';
+            return `<img src="${base64Flag + imageStr}" />`
+        }))
+
+        
+        
+
+        return response.send(test.join())
     } catch(error) {
         return response.json({ error: error.message })
     }

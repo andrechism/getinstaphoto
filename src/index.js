@@ -11,4 +11,4 @@ var app = express_1.default();
 exports.app = app;
 app.use(express_1.default.json());
 app.use(cors_1.default());
-app.use("/insta", insta_routes_1.instaRoutes);
+app.use("/api/v1", insta_routes_1.instaRoutes);

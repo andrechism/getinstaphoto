@@ -8,6 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 
-app.use("/insta", instaRoutes);
+app.use("/api/v1", instaRoutes);
 
 export { app };
