@@ -31,11 +31,12 @@ instaRoutes.post("/", async (request, response) => {
 
         // return response.json(data)
         const test = await Promise.all(edges.map(async (edge) => {
-            const imageResponse = await fetch(edge.node.display_url)
+            // const imageResponse = await fetch(edge.node.display_resources[0].src)
+            const imageResponse = await fetch(edge.node.thumbnail_src)
             const imageBuffer = await imageResponse.arrayBuffer()
             var imageStr = await arrayBufferToBase64(imageBuffer);
             var base64Flag = 'data:image/jpeg;base64,';
-            return `<img src="${base64Flag + imageStr}" />`
+            return `<a href="https://www.instagram.com/p/${edge.node.shortcode}/"><img src="${base64Flag + imageStr}" /></a>`
         }))
 
         

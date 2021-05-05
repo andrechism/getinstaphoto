@@ -81,7 +81,7 @@ instaRoutes.post("/", function (request, response) { return __awaiter(void 0, vo
                         var imageResponse, imageBuffer, imageStr, base64Flag;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0: return [4 /*yield*/, node_fetch_1.default(edge.node.display_url)];
+                                case 0: return [4 /*yield*/, node_fetch_1.default(edge.node.thumbnail_src)];
                                 case 1:
                                     imageResponse = _a.sent();
                                     return [4 /*yield*/, imageResponse.arrayBuffer()];
@@ -91,7 +91,7 @@ instaRoutes.post("/", function (request, response) { return __awaiter(void 0, vo
                                 case 3:
                                     imageStr = _a.sent();
                                     base64Flag = 'data:image/jpeg;base64,';
-                                    return [2 /*return*/, "<img src=\"" + (base64Flag + imageStr) + "\" />"];
+                                    return [2 /*return*/, "<a href=\"https://www.instagram.com/p/" + edge.node.shortcode + "/\"><img src=\"" + (base64Flag + imageStr) + "\" /></a>"];
                             }
                         });
                     }); }))];
